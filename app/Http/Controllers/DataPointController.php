@@ -33,9 +33,7 @@ class DataPointController extends Controller
     public function getData()
     {
         $datapoint = DataPoint::withCount(['data_definitions'])->get();
-        $data = DataDefinition::/*with(['point_data'=>function($query){
-            $query->select('data_point');
-        }])->*/get();
+        $data = DataDefinition::with(['point_data'])->get();
         $response['datapoint'] = $datapoint;
         $response['datapointdefinitions'] = $data;
         return $this->successApiResponse($response);

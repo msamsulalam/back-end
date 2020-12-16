@@ -17,8 +17,8 @@ class CreateDataDefinitionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('data_point_id');
             $table->foreign('data_point_id')->references('id')->on('data_points')->onDelete('cascade');
-            $table->string("entity")->nullable();
-            $table->string("parent_entity")->nullable();
+            $table->string("entity");
+            $table->string("parent_entity");
             $table->string("data_point_definition")->nullable();
             $table->string("look_up_values")->nullable();
             $table->string("look_up_value_definitions", 512)->nullable();

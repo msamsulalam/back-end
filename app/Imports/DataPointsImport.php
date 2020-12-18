@@ -25,7 +25,9 @@ class DataPointsImport implements ToCollection
     public function collection(Collection $rows)
     {
         foreach ($rows as $key => $row) {
-            if ($key == 0) {
+            if ($key == 0 ||
+                $row[2] === null
+            ) {
                 continue;
             }
 
@@ -53,15 +55,14 @@ class DataPointsImport implements ToCollection
                     'responsible_role' => $row[16],
                 ];
                 $dataPoint = DataPoint::create($input);
-
-                DataDefinition::create([
-                    'data_point_id' => $dataPoint->id,
-                    'entity' => preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[10])),
-                    'parent_entity' => preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[11])),
-                    'data_point_definition' => trim($row[1]),
-                    'look_up_values' => $row[2],
-                    'look_up_value_definitions' => $row[3],
-                ]);
+                    DataDefinition::create([
+                        'data_point_id' => $dataPoint->id,
+                        'entity' => preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[10])),
+                        'parent_entity' => preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[11])),
+                        'data_point_definition' => trim($row[1]),
+                        'look_up_values' => $row[2],
+                        'look_up_value_definitions' => $row[3],
+                    ]);
             } else {
                 $checkexist = DataPoint::where('data_point', 'LIKE', '%' . preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[0])) . '%')
                     ->where('entity', 'LIKE', '%' . preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[10])) . '%')
@@ -72,6 +73,7 @@ class DataPointsImport implements ToCollection
                     ->where('parent_entity', 'LIKE', '%' . preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[11])) . '%')
                     ->where('look_up_values', 'LIKE', '%' . preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/', '', trim($row[2])) . '%')
                     ->exists();
+
                 if (!$checkDatadefinitionexist) {
                     DataDefinition::create([
                         'data_point_id' => $checkexist->id,

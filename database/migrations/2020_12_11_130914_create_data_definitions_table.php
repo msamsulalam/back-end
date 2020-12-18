@@ -13,6 +13,7 @@ class CreateDataDefinitionsTable extends Migration
      */
     public function up()
     {
+
         Schema::create('data_definitions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('data_point_id');

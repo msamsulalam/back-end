@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::post('import', 'DataPointController@import')->name('import');
 Route::get('getData', 'DataPointController@getData')->name('getData');
+Route::put('updateData', 'DataPointController@updateData')->name('updateData');

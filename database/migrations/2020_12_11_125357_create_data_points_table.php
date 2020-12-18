@@ -13,6 +13,7 @@ class CreateDataPointsTable extends Migration
      */
     public function up()
     {
+
         Schema::create('data_points', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("data_point");
